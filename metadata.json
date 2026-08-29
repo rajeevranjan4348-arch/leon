@@ -1,0 +1,12 @@
+{
+  "name": "Rishi & Manus AI",
+  "description": "Comprehensive AI platform with context-aware Gemini Support & Booking Chatbot, real-time Google Maps and Search agents, messaging, WebRTC voice/video calls, and autonomous capabilities.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation",
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
