@@ -11,7 +11,7 @@ export const IMPORTED_SYSTEMS_TOOL_SCHEMA = {
     properties: {
       subsystem: {
         type: 'string',
-        enum: ['memory', 'browser', 'cybersecurity', 'scientific', 'diagram', 'harness', 'summary'],
+        enum: ['deepseek_harness', 'memory', 'browser', 'cybersecurity', 'scientific', 'diagram', 'harness', 'summary'],
         description: 'The imported functional subsystem to execute.',
       },
       action: {
@@ -28,7 +28,7 @@ export const IMPORTED_SYSTEMS_TOOL_SCHEMA = {
 };
 
 export async function executeImportedSystemsTool(args: {
-  subsystem: 'memory' | 'browser' | 'cybersecurity' | 'scientific' | 'diagram' | 'harness' | 'summary';
+  subsystem: 'deepseek_harness' | 'memory' | 'browser' | 'cybersecurity' | 'scientific' | 'diagram' | 'harness' | 'summary';
   action?: string;
   params?: Record<string, any>;
 }): Promise<ToolResult> {
@@ -38,6 +38,19 @@ export async function executeImportedSystemsTool(args: {
     const params = args.params || {};
 
     switch (subsystem) {
+      case 'deepseek_harness': {
+        const objective = params.objective || params.prompt || params.goal || 'Execute multi-step task';
+        const res = await importedSystemsFacade.executeWithDeepSeekHarness(objective, {
+          sessionId: params.sessionId,
+          maxExecutionSteps: params.maxSteps || 10,
+        });
+        return {
+          success: res.status === 'success',
+          action: `${IMPORTED_SYSTEMS_TOOL_NAME}_deepseek_harness`,
+          value: res,
+          message: `DeepSeek Harness completed task with ${res.stepsExecuted} steps executed (${res.totalDurationMs}ms). Final Status: ${res.status.toUpperCase()}.`,
+        };
+      }
       case 'summary': {
         const summary = importedSystemsFacade.getSystemSummary();
         return {

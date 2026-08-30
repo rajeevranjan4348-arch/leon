@@ -23,6 +23,9 @@ import { privacyAlignEngine } from '../privacy/PrivacyAlignEngine';
 import { fluxInferenceEngine } from '../imageGeneration/FluxInferenceEngine';
 import { androidControlEngine } from '../androidControl/AndroidControlEngine';
 
+import { deepSeekAgentRuntime, DeepSeekAgentRuntime, executeWithDeepSeekHarness } from '../deepseekHarness';
+import { agentReachEngine, AgentReachEngine, AgentReachDoctor, agentReachRouter } from '../agentReach';
+
 export * from './agencyAgents';
 export * from './awesomeResources';
 export * from './scrapling';
@@ -58,6 +61,7 @@ export * from './publicApis';
 export * from '../../hooks/useUnifiedMemory';
 export * from '../privacy/PrivacyAlignEngine';
 export * from '../imageGeneration/FluxInferenceEngine';
+export * from '../agentReach';
 
 export class ImportedSystemsFacade {
   public memory = unifiedMemoryEngine;
@@ -90,12 +94,18 @@ export class ImportedSystemsFacade {
   public privacy = privacyAlignEngine;
   public flux = fluxInferenceEngine;
   public androidControl = androidControlEngine;
+  public deepSeekHarness = deepSeekAgentRuntime;
+  public executeWithDeepSeekHarness = executeWithDeepSeekHarness;
+  public agentReach = agentReachEngine;
+  public agentReachRouter = agentReachRouter;
+  public agentReachDoctor = AgentReachDoctor;
 
   public getSystemSummary() {
     return {
       status: 'active',
-      importedRepositoriesCount: 31,
+      importedRepositoriesCount: 32,
       importedRepositories: [
+        { name: 'DeepSeek Harness', capability: 'Cordis-Inspired Agent Meta-Framework, Plugins, DAG Planning & Task State Machine' },
         { name: 'Awesome', capability: 'Curated Developer Resource Catalog & Structured Discovery' },
         { name: 'Public APIs', capability: 'Public API Catalog, Intent Routing & Fallback Execution' },
         { name: 'Scrapling', capability: 'Recursive Web Crawler, Content Parser & Site Knowledge Indexer' },

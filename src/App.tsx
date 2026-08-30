@@ -16,6 +16,7 @@ import { GoogleMapsView } from '@/components/maps/GoogleMapsView';
 import { GoogleAgentsHub } from '@/components/agents/GoogleAgentsHub';
 import { AgentActivityLogPanel } from '@/components/ruflo/AgentActivityLogPanel';
 import { SubtaskFailureToastListener } from '@/components/ruflo/SubtaskFailureToastListener';
+import { StartupApiHealthListener } from '@/components/common/StartupApiHealthListener';
 import { AIDevicePermissionsModal } from '@/components/agent/AIDevicePermissionsModal';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { Image as ImageIcon, Library as LibraryIcon, Folder as FolderIcon, PanelLeft } from 'lucide-react';
@@ -462,6 +463,9 @@ function App() {
 
       {/* Subtask Failure Toast Notification Listener */}
       <SubtaskFailureToastListener />
+
+      {/* Asynchronous Startup API Health Check Service Listener */}
+      <StartupApiHealthListener />
 
       <Toaster position="top-center" />
       <OfflineIndicator />

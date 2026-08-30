@@ -3,6 +3,26 @@ import { OPEN_APP_TOOL_NAME, OPEN_APP_TOOL_SCHEMA, executeOpenAppTool } from './
 import { MEMORY_TOOL_NAME, MEMORY_TOOL_SCHEMA, executeMemoryTool } from './memory';
 import { AGENTS_CLI_TOOL_NAME, AGENTS_CLI_TOOL_SCHEMA, executeAgentsCliTool } from './agentsCli';
 import { IMPORTED_SYSTEMS_TOOL_NAME, IMPORTED_SYSTEMS_TOOL_SCHEMA, executeImportedSystemsTool } from './importedTools';
+import {
+  AGENT_REACH_SEARCH_TOOL_NAME,
+  AGENT_REACH_SEARCH_TOOL_SCHEMA,
+  executeAgentReachSearch,
+  AGENT_REACH_READ_URL_TOOL_NAME,
+  AGENT_REACH_READ_URL_TOOL_SCHEMA,
+  executeAgentReachReadUrl,
+  AGENT_REACH_YOUTUBE_TOOL_NAME,
+  AGENT_REACH_YOUTUBE_TOOL_SCHEMA,
+  executeAgentReachYouTube,
+  AGENT_REACH_GITHUB_TOOL_NAME,
+  AGENT_REACH_GITHUB_TOOL_SCHEMA,
+  executeAgentReachGitHub,
+  AGENT_REACH_SOCIAL_TOOL_NAME,
+  AGENT_REACH_SOCIAL_TOOL_SCHEMA,
+  executeAgentReachSocial,
+  AGENT_REACH_DIAGNOSTICS_TOOL_NAME,
+  AGENT_REACH_DIAGNOSTICS_TOOL_SCHEMA,
+  executeAgentReachDiagnostics,
+} from './agentReachTools';
 import { ToolResult } from '@/controllers/appController';
 
 export interface ToolDefinition {
@@ -55,6 +75,49 @@ class ToolRegistry {
       description: IMPORTED_SYSTEMS_TOOL_SCHEMA.description,
       parameters: IMPORTED_SYSTEMS_TOOL_SCHEMA.parameters,
       handler: executeImportedSystemsTool,
+    });
+
+    // Automatically register Agent-Reach Internet Capabilities
+    this.registerTool({
+      name: AGENT_REACH_SEARCH_TOOL_NAME,
+      description: AGENT_REACH_SEARCH_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_SEARCH_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachSearch,
+    });
+
+    this.registerTool({
+      name: AGENT_REACH_READ_URL_TOOL_NAME,
+      description: AGENT_REACH_READ_URL_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_READ_URL_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachReadUrl,
+    });
+
+    this.registerTool({
+      name: AGENT_REACH_YOUTUBE_TOOL_NAME,
+      description: AGENT_REACH_YOUTUBE_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_YOUTUBE_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachYouTube,
+    });
+
+    this.registerTool({
+      name: AGENT_REACH_GITHUB_TOOL_NAME,
+      description: AGENT_REACH_GITHUB_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_GITHUB_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachGitHub,
+    });
+
+    this.registerTool({
+      name: AGENT_REACH_SOCIAL_TOOL_NAME,
+      description: AGENT_REACH_SOCIAL_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_SOCIAL_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachSocial,
+    });
+
+    this.registerTool({
+      name: AGENT_REACH_DIAGNOSTICS_TOOL_NAME,
+      description: AGENT_REACH_DIAGNOSTICS_TOOL_SCHEMA.description,
+      parameters: AGENT_REACH_DIAGNOSTICS_TOOL_SCHEMA.parameters,
+      handler: executeAgentReachDiagnostics,
     });
   }
 

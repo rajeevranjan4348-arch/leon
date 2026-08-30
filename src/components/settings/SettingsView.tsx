@@ -59,6 +59,7 @@ import {
 } from 'lucide-react';
 import { ApiUsageDashboard } from './ApiUsageDashboard';
 import { ServiceHealthWidget } from './ServiceHealthWidget';
+import { ApiHealthMonitoringView } from './ApiHealthMonitoringView';
 import { saveWallpaperBlob } from '@/lib/wallpaperStorage';
 import { AnimatedAccordion } from '@/components/motion';
 
@@ -99,6 +100,7 @@ interface SettingsViewProps {
 export type SettingsCategory =
   | 'account'
   | 'appearance'
+  | 'api_health'
   | 'usage'
   | 'ai_behavior'
   | 'model'
@@ -124,7 +126,8 @@ interface CategoryDef {
 const CATEGORIES: CategoryDef[] = [
   { id: 'account', label: 'Account', icon: <User size={16} />, description: 'Profile, name, email & account preferences' },
   { id: 'appearance', label: 'Appearance', icon: <Palette size={16} />, description: 'Theme, accent colors, typography & layout' },
-  { id: 'usage', label: 'API Usage & Health', icon: <Activity size={16} />, description: 'Recharts token analytics, cost & API service health' },
+  { id: 'api_health', label: 'API Health Monitoring', icon: <Activity size={16} />, description: 'Live ping probes, latency tracking & endpoint uptime status' },
+  { id: 'usage', label: 'API Usage & Tokens', icon: <BarChart3 size={16} />, description: 'Recharts token analytics, cost & model usage charts' },
   { id: 'ai_behavior', label: 'AI Behavior', icon: <Brain size={16} />, description: 'Personality, reasoning style & response length' },
   { id: 'model', label: 'Model', icon: <Cpu size={16} />, description: 'Model selection, speed & context controls' },
   { id: 'voice', label: 'Voice', icon: <Volume2 size={16} />, description: 'Voice mode, personas, speech rate & mic controls' },
@@ -570,11 +573,30 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose }) => {
       });
     }
 
-    if (matches('API Usage & Token Analytics', 'Recharts graphs token consumption cost Gemini NVIDIA MiniMax latency health', 'API Usage & Health')) {
+    if (matches('API Health Monitoring', 'Live ping probes latency tracking endpoint uptime status Gemini OpenAI NVIDIA MiniMax health check', 'API Health Monitoring')) {
       items.push({
         category: CATEGORIES[2],
         card: (
-          <SettingCard key="api_usage_search" title="API Usage & Token Analytics" description="Visualize token consumption, estimated costs, and service latencies" categoryBadge="API Usage & Health">
+          <SettingCard key="api_health_search" title="API Health Monitoring" description="Real-time ping probes, latency tracking, and endpoint uptime logs" categoryBadge="API Health Monitoring">
+            <button
+              onClick={() => {
+                setActiveCategory('api_health');
+                setSearchQuery('');
+              }}
+              className="px-3 py-1.5 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold hover:bg-cyan-500/30 transition-colors cursor-pointer"
+            >
+              Open Health Monitor
+            </button>
+          </SettingCard>
+        )
+      });
+    }
+
+    if (matches('API Usage & Token Analytics', 'Recharts graphs token consumption cost Gemini NVIDIA MiniMax latency health', 'API Usage & Tokens')) {
+      items.push({
+        category: CATEGORIES[3],
+        card: (
+          <SettingCard key="api_usage_search" title="API Usage & Token Analytics" description="Visualize token consumption, estimated costs, and service latencies" categoryBadge="API Usage & Tokens">
             <button
               onClick={() => {
                 setActiveCategory('usage');
@@ -1211,9 +1233,45 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ onClose }) => {
           </div>
         );
 
+      case 'api_health':
+        return (
+          <ApiHealthMonitoringView
+            onNavigateToDeveloperTab={() => setActiveCategory('developer')}
+          />
+        );
+
       case 'usage':
         return (
           <div className="space-y-6">
+            {/* Quick Banner to API Health Monitoring */}
+            <div className="p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 flex items-center justify-between gap-3 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                  <Activity size={18} />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-white flex items-center gap-2">
+                    <span>Live API Health & Ping Monitor</span>
+                    <span className="px-2 py-0.5 rounded-full text-[9px] bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                      Live Fleet Telemetry
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-white/60">
+                    Real-time ping probes, auto-monitoring intervals, latency charts, and audit logs.
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActiveCategory('api_health')}
+                className="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shadow-cyan-500/20 shrink-0 cursor-pointer"
+              >
+                <Activity size={13} />
+                <span>Open Health Monitor</span>
+              </button>
+            </div>
+
             <ServiceHealthWidget defaultExpanded={true} />
             <ApiUsageDashboard />
           </div>
